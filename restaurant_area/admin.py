@@ -11,7 +11,7 @@ class RestaurantAdmin(admin.ModelAdmin):
     list_display = ('id', 'restaurant', 'name', 'is_active', 'created_at', 'updated_at')
     list_display_links = ('restaurant', 'name')
     list_editable = ('is_active',)
-    list_filter = ('mobile_number', 'is_active', 'created_at', 'updated_at')
+    list_filter = ('restaurant', 'is_active', 'created_at', 'updated_at')
     search_fields = ('name', 'restaurant__username', 'mobile_number')
 
 
