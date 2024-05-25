@@ -36,6 +36,10 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework_simplejwt',
     'django_filters',
+
+    # My Apps
+    'types_and_features.apps.TypesAndFeaturesConfig',
+    'restaurant_area.apps.RestaurantAreaConfig',
 ]
 
 MIDDLEWARE = [
