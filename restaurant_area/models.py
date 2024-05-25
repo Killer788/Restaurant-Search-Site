@@ -20,7 +20,7 @@ class Restaurant(BaseModelWithIsActive):
         blank=False,
         verbose_name='Restaurant',
     )
-    name = models.CharField(max_length=50, null=False, blank=False, verbose_name='Name')
+    name = models.CharField(max_length=50, null=False, blank=False, verbose_name='Name', unique=True)
     address = models.TextField(null=False, blank=False, verbose_name='Address')
     mobile_number = models.CharField(max_length=11, null=False, blank=False, verbose_name='Mobile Number')
     landline_number = models.CharField(max_length=8, null=False, blank=False, verbose_name='Landline Number')
@@ -43,7 +43,7 @@ class Restaurant(BaseModelWithIsActive):
 
 class RestaurantImage(BaseModel):
     restaurant = models.ForeignKey(
-        BaseUser,
+        Restaurant,
         on_delete=models.CASCADE,
         related_name='restaurant_images',
         null=False,
@@ -63,7 +63,7 @@ class RestaurantImage(BaseModel):
 
 class RestaurantType(BaseModel):
     restaurant = models.ForeignKey(
-        BaseUser,
+        Restaurant,
         on_delete=models.CASCADE,
         related_name='restaurant_types',
         null=False,
@@ -90,7 +90,7 @@ class RestaurantType(BaseModel):
 
 class RestaurantUniqueFeature(BaseModel):
     restaurant = models.ForeignKey(
-        BaseUser,
+        Restaurant,
         on_delete=models.CASCADE,
         related_name='restaurant_unique_features',
         null=False,
@@ -117,7 +117,7 @@ class RestaurantUniqueFeature(BaseModel):
 
 class RestaurantCommonFeature(BaseModel):
     restaurant = models.ForeignKey(
-        BaseUser,
+        Restaurant,
         on_delete=models.CASCADE,
         related_name='restaurant_common_features',
         null=False,
@@ -144,7 +144,7 @@ class RestaurantCommonFeature(BaseModel):
 
 class RestaurantInternationalFoodType(BaseModel):
     restaurant = models.ForeignKey(
-        BaseUser,
+        Restaurant,
         on_delete=models.CASCADE,
         related_name='restaurant_international_food_types',
         null=False,
@@ -171,7 +171,7 @@ class RestaurantInternationalFoodType(BaseModel):
 
 class RestaurantMainFoodType(BaseModel):
     restaurant = models.ForeignKey(
-        BaseUser,
+        Restaurant,
         on_delete=models.CASCADE,
         related_name='restaurant_main_food_types',
         null=False,
