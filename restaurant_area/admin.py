@@ -6,8 +6,22 @@ from .models import (Restaurant, RestaurantImage, RestaurantType, RestaurantUniq
 
 
 # Register your models here.
+@admin.action(description="Activate the selected rows")
+def activate_rows(modeladmin, request, queryset):
+    queryset.update(is_active=True)
+
+
+@admin.action(description="Deactivate the selected rows")
+def deactivate_rows(modeladmin, request, queryset):
+    queryset.update(is_active=False)
+
+
+class BaseAdmin(admin.ModelAdmin):
+    actions = ('activate_rows', 'deactivate_rows')
+
+
 @register(Restaurant)
-class RestaurantAdmin(admin.ModelAdmin):
+class RestaurantAdmin(BaseAdmin):
     list_display = ('id', 'restaurant', 'name', 'is_active', 'created_at', 'updated_at')
     list_display_links = ('restaurant', 'name')
     list_editable = ('is_active',)
