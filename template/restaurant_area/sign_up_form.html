@@ -5,11 +5,38 @@
     <title>Sign Up</title>
 </head>
 <body>
-    <form method="post">
+    <form method="post" action="">
         {% csrf_token %}
-        {{ form.as_p }}
-
+        <div class="backend-input">
+            <label>Email: </label>
+            <span>{{ form.email }}</span>
+        </div>
+        <div class="backend-input">
+            <label>Username: </label>
+            <span>{{ form.username }}</span>
+        </div>
+        <div class="backend-input">
+            <label>Password: </label>
+            <span>{{ form.password1 }}</span>
+        </div>
+        <div class="backend-input">
+            <label>Repeat Password: </label>
+            <span>{{ form.password2 }}</span>
+        </div>
         <input type="submit" name="sign_up" value="Sign Up">
     </form>
+
+    <script>
+        let input_divs = document.getElementsByClassName('backend-input')
+        let input_fields = []
+        for(let item of input_divs) {
+            let item_input = item.getElementsByTagName('span')
+            input_fields.push(item_input[0].firstChild)
+        }
+        input_fields[0].placeholder = 'Email...'
+        input_fields[1].placeholder = 'Username...'
+        input_fields[2].placeholder = 'Password...'
+        input_fields[3].placeholder = 'Repeat Password...'
+    </script>
 </body>
 </html>
