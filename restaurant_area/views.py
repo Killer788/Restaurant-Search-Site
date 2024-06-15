@@ -5,8 +5,9 @@ from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.decorators import login_required
 
 from .serializers import RestaurantsSerializer
-from .models import Restaurant
+from .models import Restaurant, BaseUser
 from .forms import SignUpForm
+from .restaurant_handler import RestaurantHandler
 
 
 # Create your views here.
@@ -41,6 +42,26 @@ def sign_up_view(request):
             form = SignUpForm(request.POST)
             if form.is_valid():
                 form.save()
+                username = request.POST['username'].lower()
+                password = request.POST['password1']
+                name = request.POST['restaurant_name']
+                address = request.POST['address']
+                mobile_number = request.POST['mobile_number']
+                landline_number = request.POST['landline_number']
+                link = request.POST['link']
+                social_media = request.POST['social_media']
+
+                base_restaurant_instance = BaseUser.objects.get(username=username)
+                restaurant_handler = RestaurantHandler(username=username, password=password)
+                restaurant_handler.sign_up(
+                    restaurant=base_restaurant_instance,
+                    name=name,
+                    address=address,
+                    mobile_number=mobile_number,
+                    landline_number=landline_number,
+                    link=link,
+                    social_media=social_media,
+                )
 
         context = {'form': form}
 
