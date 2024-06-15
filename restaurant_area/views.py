@@ -42,7 +42,7 @@ def sign_up_view(request):
             form = SignUpForm(request.POST)
             if form.is_valid():
                 form.save()
-                username = request.POST['username'].lower()
+                username = request.POST['username']
                 password = request.POST['password1']
                 name = request.POST['restaurant_name']
                 address = request.POST['address']
