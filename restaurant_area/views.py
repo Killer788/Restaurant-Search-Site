@@ -34,6 +34,7 @@ class RestaurantsViewSet(viewsets.ReadOnlyModelViewSet):
 
 
 def sign_up_view(request):
+    message = ''
     if request.user.is_authenticated and not request.user.is_superuser:
         return redirect('../')
     else:
@@ -53,7 +54,7 @@ def sign_up_view(request):
 
                 base_restaurant_instance = BaseUser.objects.get(username=username)
                 restaurant_handler = RestaurantHandler(username=username, password=password)
-                restaurant_handler.sign_up(
+                message = restaurant_handler.sign_up(
                     restaurant=base_restaurant_instance,
                     name=name,
                     address=address,
@@ -63,6 +64,6 @@ def sign_up_view(request):
                     social_media=social_media,
                 )
 
-        context = {'form': form}
+        context = {'form': form, 'message': message}
 
         return render(request, 'restaurant_area/sign_up_form.html', context)
