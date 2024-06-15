@@ -1,4 +1,4 @@
-from sqlite3 import IntegrityError
+from django.db.utils import IntegrityError
 
 from .models import Restaurant
 
