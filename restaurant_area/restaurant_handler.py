@@ -1,3 +1,4 @@
+import re
 from django.db.utils import IntegrityError
 
 from .models import Restaurant
@@ -11,10 +12,11 @@ class RestaurantHandler:
     def sign_up(self, restaurant, name, address, mobile_number, landline_number, link, social_media):
         try:
             validation_result, message = self.main_validator(
-                name,
-                mobile_number,
-                landline_number,
-                social_media,
+                name=name,
+                mobile_number=mobile_number,
+                landline_number=landline_number,
+                link=link,
+                social_media=social_media,
             )
             if validation_result:
                 Restaurant.objects.create(
@@ -34,7 +36,7 @@ class RestaurantHandler:
         except IntegrityError:
             return "Restaurant with this name already exists"
 
-    def main_validator(self, name, mobile_number, landline_number, social_media):
+    def main_validator(self, name, mobile_number, landline_number, link, social_media):
         if len(name) > 50:
             return False, "Maximum character length for name is 50"
 
@@ -55,8 +57,16 @@ class RestaurantHandler:
             if not item.isdigit():
                 return False, "Please enter your landline number correctly"
 
-        correct_social_media = ['Instagram', 'Telegram', 'Twitter']
+        regex = ("((http|https)://)(www.)?" +
+                 "[a-zA-Z0-9@:%._\\+~#?&//=]" +
+                 "{2,256}\\.[a-z]" +
+                 "{2,6}\\b([-a-zA-Z0-9@:%" +
+                 "._\\+~#?&//=]*)")
+        regex_compiled = re.compile(regex)
+        if re.search(regex_compiled, link) is None:
+            return False, "Invalid Link was entered. Please make sure that your link starts with 'https://'"
 
+        correct_social_media = ['Instagram', 'Telegram', 'Twitter']
         if social_media not in correct_social_media:
             return False, "Please choose one of the options"
 
