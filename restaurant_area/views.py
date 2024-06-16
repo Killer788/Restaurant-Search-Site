@@ -42,9 +42,10 @@ def sign_up_view(request):
         if request.method == 'POST':
             form = SignUpForm(request.POST)
             if form.is_valid():
-                form.save()
+                email = request.POST['email']
                 username = request.POST['username']
-                password = request.POST['password1']
+                password1 = request.POST['password1']
+                password2 = request.POST['password2']
                 name = request.POST['restaurant_name']
                 address = request.POST['address']
                 mobile_number = request.POST['mobile_number']
@@ -52,10 +53,12 @@ def sign_up_view(request):
                 link = request.POST['link']
                 social_media = request.POST['social_media']
 
-                base_restaurant_instance = BaseUser.objects.get(username=username)
-                restaurant_handler = RestaurantHandler(username=username, password=password)
-                message = restaurant_handler.sign_up(
-                    restaurant=base_restaurant_instance,
+                restaurant_handler = RestaurantHandler()
+                validation_result, message = restaurant_handler.main_validator(
+                    email=email,
+                    username=username,
+                    password1=password1,
+                    password2=password2,
                     name=name,
                     address=address,
                     mobile_number=mobile_number,
@@ -63,6 +66,18 @@ def sign_up_view(request):
                     link=link,
                     social_media=social_media,
                 )
+                if validation_result:
+                    form.save()
+                    base_restaurant_instance = BaseUser.objects.get(username=username)
+                    message = restaurant_handler.sign_up(
+                        restaurant=base_restaurant_instance,
+                        name=name,
+                        address=address,
+                        mobile_number=mobile_number,
+                        landline_number=landline_number,
+                        link=link,
+                        social_media=social_media,
+                    )
 
         context = {'form': form, 'message': message}
 

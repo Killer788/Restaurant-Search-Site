@@ -1,44 +1,30 @@
 import re
-from django.db.utils import IntegrityError
 
 from .models import Restaurant
 
 
 class RestaurantHandler:
-    def __init__(self, username, password):
-        self.username = username
-        self.password = password
-
     def sign_up(self, restaurant, name, address, mobile_number, landline_number, link, social_media):
-        try:
-            validation_result, message = self.main_validator(
-                name=name,
-                mobile_number=mobile_number,
-                landline_number=landline_number,
-                link=link,
-                social_media=social_media,
-            )
-            if validation_result:
-                Restaurant.objects.create(
-                    restaurant=restaurant,
-                    name=name,
-                    address=address,
-                    mobile_number=mobile_number,
-                    landline_number=landline_number,
-                    link=link,
-                    social_media=social_media,
-                )
+        Restaurant.objects.create(
+            restaurant=restaurant,
+            name=name,
+            address=address,
+            mobile_number=mobile_number,
+            landline_number=landline_number,
+            link=link,
+            social_media=social_media,
+        )
 
-                message = "Restaurant created successfully"
+        return "Restaurant created successfully"
 
-            return message
-
-        except IntegrityError:
-            return "Restaurant with this name already exists"
-
-    def main_validator(self, name, mobile_number, landline_number, link, social_media):
+    def main_validator(self, email, username, password1, password2, name, address, mobile_number,
+                       landline_number, link, social_media):
         if len(name) > 50:
             return False, "Maximum character length for name is 50"
+
+        already_existing_name = Restaurant.objects.get(name_iexact=name)
+        if already_existing_name:
+            return False, "Restaurant with this name already exists"
 
         if len(mobile_number) != 11:
             return False, "A mobile number should be 11 digits long"
@@ -69,5 +55,9 @@ class RestaurantHandler:
         correct_social_media = ['Instagram', 'Telegram', 'Twitter']
         if social_media not in correct_social_media:
             return False, "Please choose one of the options"
+
+        if (email == "" or username == "" or password1 == "" or password2 == "" or name == "" or address == "" or
+                mobile_number == "" or landline_number == "" or link == "" or social_media == ""):
+            return False, "It doesn't work this way pal:)"
 
         return True, ""
