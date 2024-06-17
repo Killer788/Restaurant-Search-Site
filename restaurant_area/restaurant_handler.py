@@ -1,5 +1,6 @@
 import re
 
+import restaurant_area.models
 from .models import Restaurant
 
 
@@ -22,9 +23,17 @@ class RestaurantHandler:
         if len(name) > 50:
             return False, "Maximum character length for name is 50"
 
-        already_existing_name = Restaurant.objects.get(name_iexact=name)
+        try:
+            already_existing_name = Restaurant.objects.get(name__iexact=name)
+        except restaurant_area.models.Restaurant.DoesNotExist:
+            already_existing_name = ''
+
         if already_existing_name:
             return False, "Restaurant with this name already exists"
+
+        for item in mobile_number:
+            if not item.isdigit():
+                return False, "Please enter your mobile number correctly"
 
         if len(mobile_number) != 11:
             return False, "A mobile number should be 11 digits long"
@@ -32,16 +41,12 @@ class RestaurantHandler:
         if mobile_number[0] != '0' or mobile_number[1] != '9':
             return False, "Your mobile number should start width 09"
 
-        for item in mobile_number:
-            if not item.isdigit():
-                return False, "Please enter your mobile number correctly"
-
-        if len(landline_number) != 8:
-            return False, "A landline number should be 8 digits long(do not enter your city code)"
-
         for item in landline_number:
             if not item.isdigit():
                 return False, "Please enter your landline number correctly"
+
+        if len(landline_number) != 8:
+            return False, "A landline number should be 8 digits long(do not enter your city code)"
 
         regex = ("((http|https)://)(www.)?" +
                  "[a-zA-Z0-9@:%._\\+~#?&//=]" +
