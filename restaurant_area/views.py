@@ -105,3 +105,8 @@ def sign_in_view(request):
         context = {'message': message}
 
         return render(request, 'restaurant_area/sign_in_form.html', context)
+
+
+def sign_out_view(request):
+    logout(request)
+    return redirect('signin')
