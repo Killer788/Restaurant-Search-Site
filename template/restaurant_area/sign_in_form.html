@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Sign In</title>
+    <style>
+
+    </style>
+</head>
+<body>
+    <form method="post" action="">
+        {% csrf_token %}
+        <div>
+            <label>
+                Username: <input type="text" name="username" required>
+            </label>
+        </div>
+        <div>
+            <label>
+                Password: <input type="text" name="password" required>
+            </label>
+        </div>
+
+        <p>{{ message }}</p>
+        Don't have an account? <a href="{% url 'signup' %}">Sign In</a>
+
+        <input type="submit" name="sign_in" value="Sign In">
+    </form>
+</body>
+</html>

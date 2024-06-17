@@ -82,3 +82,26 @@ def sign_up_view(request):
         context = {'form': form, 'message': message}
 
         return render(request, 'restaurant_area/sign_up_form.html', context)
+
+
+def sign_in_view(request):
+    message = ''
+    if request.user.is_authenticated and not request.user.is_superuser:
+        return redirect('../')
+    else:
+        if request.method == 'POST':
+            username = request.POST['username']
+            password = request.POST['password']
+            if username == '' or password == '':
+                message = 'Please fill out all the required fields'
+            else:
+                user = authenticate(request, username=username, password=password)
+                if user is not None:
+                    login(request, user)
+                    return redirect('../')
+                else:
+                    message = 'Username or Password is incorrect'
+
+        context = {'message': message}
+
+        return render(request, '', context)
