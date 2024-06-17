@@ -104,4 +104,4 @@ def sign_in_view(request):
 
         context = {'message': message}
 
-        return render(request, '', context)
+        return render(request, 'restaurant_area/sign_in_form.html', context)
