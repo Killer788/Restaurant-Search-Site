@@ -110,3 +110,7 @@ def sign_in_view(request):
 def sign_out_view(request):
     logout(request)
     return redirect('signin')
+
+
+def main_page_view(request):
+    return render(request, 'restaurant_area/main_page.html')

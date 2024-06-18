@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Main Page</title>
+</head>
+<body>
+
+
+    <script>
+        const URL = 'http://localhost:8000/restaurant_area/restaurants/'
+        async function getData(){
+            let all_restaurants = await fetch(URL)
+            let json_data = await all_restaurants.json()
+            console.log(json_data)
+        }
+        getData()
+    </script>
+</body>
+</html>
